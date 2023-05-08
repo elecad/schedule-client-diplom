@@ -8,7 +8,7 @@
 
     <v-spacer></v-spacer>
 
-    <v-btn icon>
+    <v-btn icon @click="isFavorite = !isFavorite">
       <v-icon>mdi-book-heart-outline</v-icon>
     </v-btn>
 
@@ -49,20 +49,26 @@
 
     <search-schedule class="pr-3"></search-schedule>
   </v-app-bar>
+
+  <v-dialog v-model="isFavorite">
+    <favoriteSchedule></favoriteSchedule
+  ></v-dialog>
 </template>
 
 <script lang="ts">
 import { ref } from 'vue';
 import { defineComponent } from 'vue';
 import searchSchedule from '@/components/search-schedule.vue';
+import FavoriteSchedule from './favorite-schedule.vue';
 
 export default defineComponent({
   name: 'AppBarMobile',
-  components: { searchSchedule },
+  components: { searchSchedule, FavoriteSchedule },
   setup() {
     const isSearch = ref(false);
+    const isFavorite = ref(false);
 
-    return { isSearch };
+    return { isSearch, isFavorite };
   },
 });
 </script>
