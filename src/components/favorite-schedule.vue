@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import useFavorites, { Favorite } from '@/hooks/useFavorites';
+import useFavorites from '@/hooks/useFavorites';
 import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
