@@ -6,7 +6,7 @@
         <div class='text-h6'>Расписание</div>
       </div>
       <div>
-        <v-btn icon class='mr-3' elevation='1'>
+        <v-btn icon class='mr-3' elevation='1' @click='selectSession'>
           <v-icon>mdi-book-education-outline</v-icon>
         </v-btn>
         <v-btn icon elevation='1' @click='openInformation'>
@@ -22,7 +22,8 @@
     <v-container>
       <datepicker
         inline
-        v-model='date'
+        :model-value='date'
+        @input='input'
         language='ru'
         full-month-name
         monday-first
@@ -30,30 +31,46 @@
     </v-container>
 
     <v-container>
-      <favorite-schedule></favorite-schedule>
+      <favorite-schedule :favorites='favorites' @remove-favorite='removeFavorite'></favorite-schedule>
     </v-container>
   </v-navigation-drawer>
 </template>
 
 <script lang='ts'>
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 
 import FavoriteSchedule from '@/components/favorite-schedule.vue';
 import SearchSchedule from '@/components/search-schedule.vue';
 import Datepicker from 'vuejs3-datepicker';
+import { useRoute, useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'NavigationDrawerDesktop',
-  emits: ['open-info', 'schedule-date'],
+  emits: ['open-info', 'schedule-date', 'select-date', 'remove-favorite'],
+  props: ['date', 'favorites'],
   components: { SearchSchedule, Datepicker, FavoriteSchedule },
   setup(props, { emit }) {
-    const date = ref(new Date());
+
+    const { push } = useRouter();
+    const { query, name, params } = useRoute();
 
     function openInformation() {
       emit('open-info');
     }
 
-    return { date, openInformation };
+    function input(newDate: Date) {
+      emit('select-date', newDate);
+    }
+
+    function removeFavorite(f) {
+      emit('remove-favorite', f);
+    }
+
+    function selectSession() {
+      push({ path: `/session/${name}/${params.id}` });
+    }
+
+    return { openInformation, input, removeFavorite, selectSession };
   }
 });
 </script>

@@ -1,17 +1,56 @@
 // Composables
-import AppVue from '@/App.vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import AppVue from '@/App.vue';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import ScheduleView from '@/view/schedule-view.vue';
+import scheduleSessionView from '@/view/schedule-session-view.vue';
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: AppVue,
+    component: AppVue
+
   },
-]
+  {
+    path: '/g/:id',
+    component: ScheduleView,
+    name: 'g'
+  },
+  {
+    path: '/t/:id',
+    component: ScheduleView,
+    name: 't'
+  },
+  {
+    path: '/l/:id',
+    component: ScheduleView,
+    name: 'l'
+  },
+  {
+    path: '/session/g/:id',
+    component: scheduleSessionView,
+    meta: {
+      name: 'g'
+    }
+  },
+  {
+    path: '/session/t/:id',
+    component: scheduleSessionView,
+    meta: {
+      name: 't'
+    }
+  },
+  {
+    path: '/session/l/:id',
+    component: scheduleSessionView,
+    meta: {
+      name: 'l'
+    }
+  }
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes,
-})
+  routes
+});
 
-export default router
+export default router;

@@ -1,9 +1,9 @@
-import { ref } from "vue";
+import { ref } from 'vue';
 
 interface Search {
   id: string;
   name: string;
-  type: "t" | "g" | "l";
+  type: 't' | 'g' | 'l';
 }
 
 export default function useSearch() {
@@ -11,7 +11,7 @@ export default function useSearch() {
 
   async function searchFetch(text: string) {
     if (text) {
-      const url = `api/search/${text}`;
+      const url = `../api/search/${text}`;
       const response = await fetch(url);
       const json = await response.json();
       if (!json.message) {

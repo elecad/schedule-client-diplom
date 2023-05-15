@@ -1,43 +1,45 @@
 import { ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 export const millisecondsInDay = 86400000;
 
-interface ScheduleResponse {
+export interface ScheduleResponse {
   actual: boolean,
   timeReceiving: number,
   header: string,
   schedule: Schedule[]
 }
 
-interface Schedule {
+export interface Schedule {
   name: string,
   date: string,
   pairs: Pair[]
 }
 
-interface Pair {
+export interface Pair {
   number: number,
   times: {
     start: number,
     end: number
   }
+  lessons: Lesson[]
 }
 
-interface Lesson {
+export interface Lesson {
   discipline: string,
   types: string[],
   characteristics: Characteristic[],
   courses: Course[]
 }
 
-interface Characteristic {
+export interface Characteristic {
   type: 'g' | 't' | 'l',
   id: string,
   text: string,
   info: string
 }
 
-interface Course {
+export interface Course {
   name: string,
   link: string
 }
@@ -50,16 +52,18 @@ export default function useSchedule() {
   const isError = ref(false);
   const schedule = ref<ScheduleResponse>(initSchedule);
 
+  const type = useRoute().name as 'g' | 't' | 'l';
+  const id = useRoute().params.id as string;
+
   scheduleFetch();
 
   async function scheduleFetch() {
     isLoading.value = true;
     const { monday, sunday } = getWeeksDate();
-    const mondayString = monday.toISOString().slice(0, 10);
-    const sundayString = sunday.toISOString().slice(0, 10);
-
+    const start = monday.toISOString().slice(0, 10);
+    const end = sunday.toISOString().slice(0, 10);
     try {
-      const response = await fetch(`/api/schedule/g/12001902?to=${mondayString}&from=${sundayString}`);
+      const response = await fetch(`/api/schedule/${type}/${id}?to=${start}&from=${end}`);
       const json = await response.json();
       isLoading.value = false;
       schedule.value = json;
@@ -72,6 +76,7 @@ export default function useSchedule() {
 
   function setDate(newDate: Date) {
     date.value = newDate;
+    console.log(date.value.toLocaleDateString());
     scheduleFetch();
   }
 
@@ -93,6 +98,7 @@ export default function useSchedule() {
 
   function nowWeek() {
     date.value = new Date();
+    console.log(date.value.toLocaleDateString());
     scheduleFetch();
   }
 
@@ -131,5 +137,5 @@ export default function useSchedule() {
   }
 
 
-  return { date, isLoading, nextWeek, backWeek, schedule, getCalenderLabel, nowWeek };
+  return { date, isLoading, nextWeek, backWeek, schedule, getCalenderLabel, nowWeek, setDate };
 }

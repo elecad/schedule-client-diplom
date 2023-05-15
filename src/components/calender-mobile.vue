@@ -23,12 +23,14 @@ import Datepicker from 'vuejs3-datepicker';
 
 export default defineComponent({
   name: 'CalenderMobile',
+  emits: ['select-date'],
+  props: ['startDate'],
   components: { Datepicker },
-  setup() {
-    const date = ref(new Date());
+  setup(props, { emit }) {
+    const date = ref(new Date(props.startDate.getTime()));
 
     function select() {
-
+      emit('select-date', date);
     }
 
     return { date, select };
