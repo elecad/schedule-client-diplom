@@ -18,4 +18,8 @@ export default defineComponent({
 .fix-max-width {
   max-width: 900px !important;
 }
+
+.v-navigation-drawer.v-navigation-drawer--left {
+  position: fixed !important;
+}
 </style>

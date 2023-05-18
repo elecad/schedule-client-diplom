@@ -14,6 +14,7 @@
 <script lang='ts'>
 import { defineComponent } from 'vue';
 import { useDisplay } from 'vuetify';
+import { useRoute, useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'HeaderScheduleSession',
@@ -23,6 +24,8 @@ export default defineComponent({
 
 
     const { mobile } = useDisplay();
+    const { meta, params } = useRoute();
+    const { push } = useRouter();
 
     function favoriteClick() {
       emit('favorite-click');
@@ -30,7 +33,7 @@ export default defineComponent({
 
 
     function back() {
-      // emit('back-date');
+      push({ path: `/${meta.name}/${params.id}` });
     }
 
     return { mobile, back, favoriteClick };

@@ -59,6 +59,8 @@ export default function useSchedule() {
 
   async function scheduleFetch() {
     isLoading.value = true;
+    isError.value = false;
+    schedule.value = { header: schedule.value.header, actual: false, timeReceiving: 0, schedule: [] };
     const { monday, sunday } = getWeeksDate();
     const start = monday.toISOString().slice(0, 10);
     const end = sunday.toISOString().slice(0, 10);
@@ -137,5 +139,5 @@ export default function useSchedule() {
   }
 
 
-  return { date, isLoading, nextWeek, backWeek, schedule, getCalenderLabel, nowWeek, setDate };
+  return { date, isLoading, nextWeek, backWeek, schedule, getCalenderLabel, nowWeek, setDate, isError };
 }

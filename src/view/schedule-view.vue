@@ -28,8 +28,13 @@
           @favorite-click='actionFavorite'
         ></header-schedule>
 
-        <loading-schedule v-if='isLoading'></loading-schedule>
-        <schedule-list v-else :scheduleResponse='schedule'></schedule-list>
+        <copy-alert-schedule v-if='schedule.timeReceiving && !schedule.actual'
+                             :get-time='schedule.timeReceiving'></copy-alert-schedule>
+
+        <h3 v-if='isError' class='mt-13 text-center'>Ошибка запроса</h3>
+        <loading-schedule v-else-if='isLoading'></loading-schedule>
+        <schedule-list v-else-if='schedule.schedule.length' :scheduleResponse='schedule'></schedule-list>
+        <h3 v-else class='mt-13 text-center'>Занятий нет</h3>
 
       </v-container>
     </v-main>
@@ -49,9 +54,11 @@ import HeaderSchedule from '@/components/header-schedule.vue';
 import useFavorites, { Favorite } from '@/hooks/useFavorites';
 import { useRoute } from 'vue-router';
 import LoadingSchedule from '@/components/loading-schedule.vue';
+import CopyAlertSchedule from '@/components/copy-alert-schedule.vue';
 
 export default defineComponent({
   components: {
+    CopyAlertSchedule,
     LoadingSchedule,
     ScheduleList,
     AppBarMobile,
@@ -65,7 +72,17 @@ export default defineComponent({
 
     const isInfo = ref(false);
     const isMobileCalender = ref(false);
-    const { date, nextWeek, backWeek, isLoading, schedule, getCalenderLabel, nowWeek, setDate } = useSchedule();
+    const {
+      date,
+      nextWeek,
+      backWeek,
+      isLoading,
+      isError,
+      schedule,
+      getCalenderLabel,
+      nowWeek,
+      setDate
+    } = useSchedule();
     const { additionFavorite, removeFavorite, checkFavorite, favorites } = useFavorites();
     const isThisScheduleFavorite = ref(checkFavorite({ type, id }));
 
@@ -103,7 +120,8 @@ export default defineComponent({
       isThisScheduleFavorite,
       favorites,
       actionFavorite,
-      removeFavoriteAction
+      removeFavoriteAction,
+      isError
     };
   }
 });

@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer touchless width='400' elevation='4' color='#f5f5f5'>
+  <v-navigation-drawer touchless width='400' elevation='4' color='#f5f5f5' absolute>
     <v-container fluid class='d-flex justify-space-between align-center pb-0'>
       <div class='d-flex justify-center align-center'>
         <v-icon class='mr-5'>mdi-school-outline</v-icon>
@@ -52,7 +52,7 @@ export default defineComponent({
   setup(props, { emit }) {
 
     const { push } = useRouter();
-    const { query, name, params } = useRoute();
+    const { query, name, params, meta } = useRoute();
 
     function openInformation() {
       emit('open-info');
@@ -67,7 +67,10 @@ export default defineComponent({
     }
 
     function selectSession() {
-      push({ path: `/session/${name}/${params.id}` });
+      if (!meta.name) {
+        push({ path: `/session/${name}/${params.id}` });
+      }
+
     }
 
     return { openInformation, input, removeFavorite, selectSession };

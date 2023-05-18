@@ -1,5 +1,4 @@
 // Composables
-import AppVue from '@/App.vue';
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import ScheduleView from '@/view/schedule-view.vue';
 import scheduleSessionView from '@/view/schedule-session-view.vue';
@@ -7,7 +6,7 @@ import scheduleSessionView from '@/view/schedule-session-view.vue';
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: AppVue
+    redirect: '/g/12001902'
 
   },
   {

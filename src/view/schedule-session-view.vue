@@ -16,15 +16,12 @@
       <v-container class='px-1 fix-max-width'>
         <header-schedule-session
           :scheduleHeader='schedule.header'
-          :isThisScheduleFavorite='isThisScheduleFavorite'
           :isLoadingSchedule='isLoading'
-          @open-mobile-calender='isMobileCalender = !isMobileCalender'
-          @favorite-click='actionFavorite'
         ></header-schedule-session>
 
         <loading-schedule v-if='isLoading'></loading-schedule>
-        <schedule-list v-else :scheduleResponse='schedule'></schedule-list>
-
+        <schedule-list v-else-if='schedule.schedule.length' :scheduleResponse='schedule'></schedule-list>
+        <h3 v-else class='mt-13'>Занятий нет</h3>
       </v-container>
     </v-main>
 
